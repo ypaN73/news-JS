@@ -1,19 +1,28 @@
 import News from './news/news';
 import Sources from './sources/sources';
+import {
+    NewsApiArticle,
+    NewsApiEverythingSuccessResponse,
+    NewsApiSource,
+    NewsApiSourcesSuccessResponse,
+} from '../../types/news-api';
 
 export class AppView {
+    private readonly news: News;
+    private readonly sources: Sources;
+
     constructor() {
         this.news = new News();
         this.sources = new Sources();
     }
 
-    drawNews(data) {
-        const values = data?.articles ? data?.articles : [];
+    public drawNews(data: NewsApiEverythingSuccessResponse): void {
+        const values: ReadonlyArray<NewsApiArticle> = data.articles ?? [];
         this.news.draw(values);
     }
 
-    drawSources(data) {
-        const values = data?.sources ? data?.sources : [];
+    public drawSources(data: NewsApiSourcesSuccessResponse): void {
+        const values: ReadonlyArray<NewsApiSource> = data.sources ?? [];
         this.sources.draw(values);
     }
 }

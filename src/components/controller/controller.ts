@@ -1,27 +1,32 @@
 import AppLoader from './appLoader';
+import { NewsApiEverythingSuccessResponse, NewsApiSourcesSuccessResponse, NewsEndpoint } from '../../types/news-api';
 
 class AppController extends AppLoader {
-    getSources(callback) {
-        super.getResp(
+    public getSources(callback: (data: NewsApiSourcesSuccessResponse) => void): void {
+        super.getResp<NewsApiSourcesSuccessResponse>(
             {
-                endpoint: 'sources',
+                endpoint: NewsEndpoint.Sources,
             },
             callback
         );
     }
 
-    getNews(e, callback) {
-        let target = e.target;
-        const newsContainer = e.currentTarget;
+    public getNews(e: MouseEvent, callback: (data: NewsApiEverythingSuccessResponse) => void): void {
+        let target = e.target as HTMLElement | null;
+        const newsContainer = e.currentTarget as HTMLElement | null;
 
-        while (target !== newsContainer) {
+        if (!newsContainer) {
+            return;
+        }
+
+        while (target && target !== newsContainer) {
             if (target.classList.contains('source__item')) {
                 const sourceId = target.getAttribute('data-source-id');
-                if (newsContainer.getAttribute('data-source') !== sourceId) {
+                if (sourceId && newsContainer.getAttribute('data-source') !== sourceId) {
                     newsContainer.setAttribute('data-source', sourceId);
-                    super.getResp(
+                    super.getResp<NewsApiEverythingSuccessResponse>(
                         {
-                            endpoint: 'everything',
+                            endpoint: NewsEndpoint.Everything,
                             options: {
                                 sources: sourceId,
                             },
@@ -31,7 +36,7 @@ class AppController extends AppLoader {
                 }
                 return;
             }
-            target = target.parentNode;
+            target = target.parentElement;
         }
     }
 }
