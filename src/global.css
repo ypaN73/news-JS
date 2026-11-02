@@ -74,10 +74,6 @@ img {
 }
 
 @media (max-width: 480px) {
-    header h1 {
-        font-size: 24px;
-    }
-
     .footer__content {
         gap: 12px;
         font-size: 12px;
