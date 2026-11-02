@@ -1,7 +1,7 @@
 import Loader from './loader';
 
 class AppLoader extends Loader {
-    constructor() {
+    public constructor() {
         const baseLink = process.env.API_URL;
         const apiKey = process.env.API_KEY;
 
